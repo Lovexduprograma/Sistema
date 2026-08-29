@@ -1,0 +1,495 @@
+:root {
+  --bg-1: #f4eae1;
+  --bg-2: #e3d5c5;
+  --ink: #1c1917; /* Grafite profundo estilo nanquim */
+  --accent: #b45309; /* Terracota / Couro aquecido */
+  --accent-2: #175200; /* Verde floresta de biblioteca clássica */
+  --gold: #d97706; /* Detalhes dourados */
+  --muted: #786c5e;
+  --card: #fffdfa; /* Papel marfim suave */
+  --shadow: rgba(44, 26, 14, 0.15);
+  --paper: #fefae0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+  background: linear-gradient(120deg, var(--bg-1), var(--bg-2));
+  min-height: 100vh;
+  animation: pageFade 0.8s ease;
+}
+
+.bg {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(180, 83, 9, 0.15), transparent 45%),
+    radial-gradient(circle at 85% 20%, rgba(30, 58, 43, 0.18), transparent 40%),
+    radial-gradient(circle at 50% 85%, rgba(217, 119, 6, 0.1), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+/* --- CABEÇALHO & HERO --- */
+.hero {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  animation: riseIn 0.7s ease;
+}
+
+.hero h1 {
+  margin: 8px 0;
+  font-size: 2.6rem;
+  font-family: "Palatino Linotype", "Book Antiqua", serif;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--muted);
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: var(--accent-2);
+  margin: 0;
+}
+
+.status {
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 25px var(--shadow);
+}
+
+/* --- CARDS & GRID --- */
+.card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 40px var(--shadow);
+  margin-bottom: 20px;
+  animation: riseIn 0.6s ease;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.grid.two {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+/* --- FORMULÁRIOS & INPUTS --- */
+label {
+  display: grid;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+input, select, textarea, button {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #d5d1c7;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus-visible, 
+select:focus-visible, 
+textarea:focus-visible {
+  outline: 2px solid var(--gold);
+  border-color: transparent;
+  box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.15);
+}
+
+button {
+  background: linear-gradient(135deg, var(--accent), #7c2d12);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #c2410c, var(--accent));
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(180, 83, 9, 0.35);
+}
+
+/* --- ABAS (TABS) --- */
+.tabs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.tab {
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--ink);
+  border: 1px solid rgba(180, 83, 9, 0.2);
+  border-radius: 8px 8px 0 0;
+  font-weight: 600;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.tab.active {
+  background: var(--accent-2);
+  color: #fefae0;
+  border-color: var(--accent-2);
+  box-shadow: 0 4px 10px rgba(30, 58, 43, 0.3);
+}
+
+.tab.ghost {
+  background: transparent;
+  border: 1px dashed var(--accent-2);
+  color: var(--accent-2);
+  border-radius: 8px;
+}
+
+/* --- VITRINE DE LIVROS --- */
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 16px;
+}
+
+.category-section {
+  margin-bottom: 18px;
+}
+
+.category-title {
+  font-size: 1.1rem;
+  margin: 8px 0 12px;
+  color: var(--accent-2);
+  letter-spacing: 0.02em;
+}
+
+.book-card {
+  background: rgba(255, 253, 250, 0.85);
+  border: 1px solid rgba(180, 83, 9, 0.15);
+  border-radius: 12px;
+  padding: 14px 10px;
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.book-card:hover {
+  background: #ffffff;
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(44, 26, 14, 0.18);
+  border-color: var(--gold);
+}
+
+.book-cover {
+  width: 105px;
+  height: 150px;
+  border-radius: 4px 8px 8px 4px;
+  object-fit: cover;
+  background: #2a3c34;
+  box-shadow: 
+    inset 4px 0 6px rgba(0, 0, 0, 0.3),
+    3px 6px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-card:hover .book-cover {
+  transform: scale(1.03) rotate(-1deg);
+}
+
+.book-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-top: 8px;
+}
+
+.book-meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.book-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid rgba(217, 119, 6, 0.3);
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+/* --- BOTÃO LER MAIS --- */
+.btn-read-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--paper);
+  color: var(--accent);
+  border: 1px solid rgba(180, 83, 9, 0.3);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(44, 26, 14, 0.08);
+  margin: 10px 0;
+}
+
+.btn-read-more:hover {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.25);
+}
+
+/* --- MODAL COM ROLAGEM E ESTRUTURA VERTICAL --- */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(27, 42, 47, 0.45);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 10;
+}
+
+.modal-card {
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 40px var(--shadow);
+}
+
+.modal-card.book-modal {
+  max-width: 460px;
+  width: 92vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 20px;
+  background: var(--card);
+  border: 1px solid rgba(217, 119, 6, 0.25);
+  box-shadow: 0 25px 50px rgba(44, 26, 14, 0.3);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: riseIn 0.3s ease;
+}
+
+.book-modal-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.book-modal-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+/* Capa no Modal (Destaque no Topo) */
+.book-cover.large,
+#bookModalCover {
+  width: 160px;
+  height: 230px;
+  max-height: 230px;
+  object-fit: contain;
+  border-radius: 6px 12px 12px 6px;
+  margin: 0 auto 1rem auto;
+  box-shadow: 
+    inset 5px 0 8px rgba(0, 0, 0, 0.35),
+    0 12px 28px rgba(0, 0, 0, 0.25);
+  transform: rotate(-1deg);
+  transition: transform 0.3s ease;
+}
+
+.book-cover.large:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.book-modal-info {
+  width: 100%;
+  background: var(--paper);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px dashed rgba(180, 83, 9, 0.25);
+  text-align: center;
+}
+
+.book-modal-info h2, 
+.book-modal-info h3 {
+  margin: 0 0 8px;
+  color: var(--accent-2);
+  font-size: 1.4rem;
+}
+
+.book-modal-info p {
+  margin: 8px 0;
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.book-modal-info p strong {
+  color: var(--accent);
+}
+
+.book-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.btn-close {
+  background: transparent;
+  color: var(--muted);
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0 8px;
+  box-shadow: none;
+}
+
+.btn-close:hover {
+  background: transparent;
+  color: var(--accent);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Personalização da Barra de Rolagem do Modal */
+.modal-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-card::-webkit-scrollbar-track {
+  background: rgba(180, 83, 9, 0.05);
+  border-radius: 10px;
+}
+
+.modal-card::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+
+.modal-card::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+/* --- TABELAS & ESTATÍSTICAS --- */
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #e1e5ea;
+  text-align: left;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stat {
+  background: #f9f7f2;
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid #eee4d8;
+}
+
+/* --- UTILITÁRIOS & ANIMAÇÕES --- */
+.muted { color: var(--muted); }
+.hint { color: var(--accent-2); font-size: 0.9rem; }
+.search { display: flex; gap: 12px; flex-wrap: wrap; }
+.panel-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.hidden, [hidden] { display: none !important; }
+
+/* Animações Keyframes */
+@keyframes riseIn {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pageFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 760px) {
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

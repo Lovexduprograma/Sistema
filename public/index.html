@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Biblioteca Escolar</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg"></div>
+    <main class="container">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Sistema de Biblioteca</p>
+          <h1>Biblioteca Escolar</h1>
+          <p class="subtitle">
+            Cadastro, empréstimo e devolução, relatórios e catálogo em um lugar só.
+          </p>
+        </div>
+        <div class="status" id="statusBox">
+          <span id="statusText">Desconectado</span>
+        </div>
+      </header>
+
+      <section class="card" id="loginCard">
+        <h2>Login</h2>
+        <p class="muted">Acesso para bibliotecários e equipe autorizada.</p>
+        <div class="grid two">
+          <label>
+            Tipo de acesso
+            <select id="loginType">
+              <option value="admin">Equipe</option>
+              <option value="student">Aluno</option>
+            </select>
+          </label>
+        </div>
+        <div class="grid two">
+          <label id="loginUserLabel">
+            Usuário
+            <input id="loginUser" type="text" autocomplete="username" />
+          </label>
+          <label id="loginEmailLabel" class="hidden">
+            E-mail
+            <input id="loginEmail" type="email" autocomplete="email" />
+          </label>
+          <label>
+            Senha
+            <input id="loginPass" type="password" autocomplete="current-password" />
+          </label>
+        </div>
+        <button id="loginBtn">Entrar</button>
+        <p class="hint" id="seedHint"></p>
+      </section>
+
+      <section class="app hidden" id="appView" hidden>
+        <nav class="tabs">
+          <button data-tab="catalogo" class="tab active">Catálogo</button>
+          <button data-tab="cadastro" class="tab" data-role="admin">Cadastrar Livro</button>
+          <button data-tab="alunos" class="tab" data-role="admin">Alunos</button>
+          <button data-tab="emprestimo" class="tab" data-role="admin">Empréstimo/Devolução</button>
+          <button data-tab="reservas" class="tab" data-role="admin">Reservas</button>
+          <button data-tab="meus-emprestimos" class="tab" data-role="student">Meus Empréstimos</button>
+          <button data-tab="relatorios" class="tab" data-role="admin">Relatórios</button>
+          <button id="logoutBtn" class="tab ghost">Sair</button>
+        </nav>
+
+        <section class="card tab-panel" id="tab-catalogo">
+          <div class="panel-head">
+            <h2>Catálogo de Livros</h2>
+            <div class="search">
+              <input id="searchInput" type="text" placeholder="Buscar por título, autor, ISBN ou categoria" />
+              <button id="searchBtn">Buscar</button>
+            </div>
+          </div>
+          <div id="booksByCategory"></div>
+        </section>
+
+        <section class="card tab-panel hidden" id="tab-cadastro" data-role="admin">
+          <h2>Cadastrar Livro</h2>
+          <div class="actions">
+            <button id="lookupBookBtn" class="tab">Buscar na Open Library</button>
+            <p class="muted">Use ISBN ou título/autor para preencher automaticamente.</p>
+          </div>
+          <div class="grid two">
+            <label>Título <input id="bookTitle" type="text" /></label>
+            <label>Autor <input id="bookAuthor" type="text" /></label>
+            <label>Editora <input id="bookPublisher" type="text" /></label>
+            <label>Ano <input id="bookYear" type="number" min="1000" max="2100" /></label>
+            <label>ISBN <input id="bookIsbn" type="text" /></label>
+            <label>Categoria <input id="bookCategory" type="text" /></label>
+            <label>Localização <input id="bookLocation" type="text" /></label>
+            <label>Link da capa <input id="bookCover" type="url" /></label>
+            <label>Cópias <input id="bookCopies" type="number" min="1" value="1" /></label>
+            <label>Sinopse
+              <textarea id="bookDescription" rows="4"></textarea>
+            </label>
+            <input id="bookOpenLibraryKey" type="hidden" />
+            <input id="bookId" type="hidden" />
+          </div>
+          <div class="actions">
+            <button id="saveBookBtn">Salvar Livro</button>
+            <button id="cancelBookEditBtn" class="tab ghost">Cancelar Edição</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Título</th>
+                  <th>Autor</th>
+                  <th>Categoria</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="booksAdminTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card tab-panel hidden" id="tab-emprestimo" data-role="admin">
+          <div class="grid two">
+            <div>
+              <h2>Novo Empréstimo</h2>
+              <label>Livro
+                <select id="loanBook"></select>
+              </label>
+              <label>Aluno cadastrado
+                <select id="loanStudentId"></select>
+              </label>
+              <label>Aluno (texto livre, se não estiver cadastrado)
+                <input id="loanStudent" type="text" />
+              </label>
+              <label>Turma
+                <input id="loanClass" type="text" />
+              </label>
+              <p class="hint">Prazo fixo de devolução: 30 dias.</p>
+              <button id="createLoanBtn">Registrar Empréstimo</button>
+            </div>
+            <div>
+              <h2>Devoluções</h2>
+              <p class="muted">Selecione um empréstimo em aberto.</p>
+              <select id="returnLoan"></select>
+              <button id="returnBtn">Registrar Devolução</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="card tab-panel hidden" id="tab-alunos" data-role="admin">
+          <div class="panel-head">
+            <h2>Cadastro de Alunos</h2>
+            <div class="search">
+              <input id="studentSearch" type="text" placeholder="Buscar aluno ou turma" />
+              <button id="studentSearchBtn">Buscar</button>
+            </div>
+          </div>
+          <div class="grid two">
+            <label>Nome <input id="studentName" type="text" /></label>
+            <label>Turma <input id="studentClass" type="text" /></label>
+            <label>E-mail <input id="studentEmail" type="email" /></label>
+            <label>Senha (para login do aluno, deixe em branco para manter)
+              <input id="studentPassword" type="password" />
+            </label>
+            <input id="studentId" type="hidden" />
+          </div>
+          <div class="actions">
+            <button id="saveStudentBtn">Salvar Aluno</button>
+            <button id="cancelStudentEditBtn" class="tab ghost">Cancelar Edição</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Turma</th>
+                  <th>E-mail</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="studentsTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card tab-panel hidden" id="tab-reservas" data-role="admin">
+          <h2>Reservas</h2>
+          <div class="grid two">
+            <label>Livro
+              <select id="reserveBook"></select>
+            </label>
+            <label>Aluno
+              <select id="reserveStudent"></select>
+            </label>
+          </div>
+          <button id="reserveBtn">Registrar Reserva</button>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Livro</th>
+                  <th>Aluno</th>
+                  <th>Data</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="reservationsTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card tab-panel hidden" id="tab-relatorios" data-role="admin">
+          <h2>Relatórios</h2>
+          <div class="stats" id="statsBox"></div>
+          <div class="grid two">
+            <label>De
+              <input id="reportFrom" type="date" />
+            </label>
+            <label>Até
+              <input id="reportTo" type="date" />
+            </label>
+          </div>
+          <div class="actions">
+            <button id="runReportBtn">Gerar Relatório</button>
+            <button id="downloadCsvBtn" class="tab">Baixar CSV</button>
+            <button id="sendOverdueBtn" class="tab ghost">Enviar e-mail de atraso</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Livro</th>
+                  <th>Aluno</th>
+                  <th>Turma</th>
+                  <th>Emprestado</th>
+                  <th>Previsto</th>
+                  <th>Devolução</th>
+                  <th>Multa</th>
+                </tr>
+              </thead>
+              <tbody id="reportTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card tab-panel hidden" id="tab-meus-emprestimos" data-role="student">
+          <h2>Meus Empréstimos</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Livro</th>
+                  <th>Autor</th>
+                  <th>Emprestado</th>
+                  <th>Previsto</th>
+                  <th>Devolução</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="myLoansTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <div class="modal hidden" id="confirmModal">
+      <div class="modal-card">
+        <h3>Confirmar exclusão</h3>
+        <p id="confirmText" class="muted">Tem certeza que deseja apagar este item?</p>
+        <div class="actions">
+          <button id="confirmCancelBtn" class="tab ghost">Cancelar</button>
+          <button id="confirmOkBtn">Apagar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal hidden" id="bookModal">
+      <div class="modal-card book-modal">
+        <div class="book-modal-head">
+          <h3 id="bookModalTitle">Livro</h3>
+          <button id="bookModalClose" class="btn-close" aria-label="Fechar">&times;</button>
+        </div>
+        
+        <img id="bookModalCover" class="book-cover large" src="" alt="Capa do livro" />
+        
+        <div class="book-modal-info">
+          <p id="bookModalAuthor" class="muted"></p>
+          <p id="bookModalMeta"></p>
+          <p id="bookModalLocation"></p>
+          <p id="bookModalAvailability" class="book-chip"></p>
+          <p id="bookModalRating" class="muted"></p>
+          <p id="bookModalDescription" class="muted"></p>
+          <div id="bookModalActions" class="book-actions"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
