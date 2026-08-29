@@ -98,8 +98,8 @@ function ensureAdminUser() {
   const count = db.prepare("SELECT COUNT(*) as c FROM users").get().c;
   if (count > 0) return null;
 
-  const username = process.env.ADMIN_USER || "admin";
-  const password = process.env.ADMIN_PASS || "admin123";
+  const username = process.env.ADMIN_USER || "LX";
+  const password = process.env.ADMIN_PASS || "Cetis2026";
   const passwordHash = bcrypt.hashSync(password, 10);
   db.prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)")
     .run(username, passwordHash);

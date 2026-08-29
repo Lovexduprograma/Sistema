@@ -792,6 +792,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Ocorreu um erro interno no servidor." });
 });
 
+
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
